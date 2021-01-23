@@ -1,6 +1,6 @@
 library(tidyverse)
 
-dat <- read.csv("/Users/jennivelichka/Desktop/Master's/New_Brunswick_Fall_2020_fish_data.csv")
+dat <- read.csv("../New_Brunswick_Fall_2020_fish_data.csv")
 summary(dat)
 
 smb <- dat %>% filter(Species == "Smallmouth Bass")
