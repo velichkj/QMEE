@@ -10,4 +10,3 @@ print(mean_smb_Hg)
 yp <- dat %>% filter(Species == "Yellow Perch")
 mean_yp_Hg <- mean(yp$Hg_ug_per_kgww, na.rm = TRUE)
 print(mean_yp_Hg)
-
