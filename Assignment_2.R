@@ -8,12 +8,15 @@ skim(dat)
 #JV: All the variables are under the right category (numeric, character and date)
 
 #JV: To have the data long, each fish ID (Fish) should have a separate row (which is what they have in the csv file right now). However if there are duplicates this could affect analyses. 
-print(dat
+dup <- (dat
       %>% group_by(Fish)
       %>% summarize(count = n())
       %>% filter(count>1)
 )
 #JV: From this tibble I can see there are no duplicates in Fish.
+## JD: If you want to depend on this, you can also consider using stopifnot:
+print(dup)
+stopifnot(nrow(dup)==0)
 
 #JV: Visualize the fish Total Length 
 ggplot(dat,aes(x=TotalLength_mm)) + geom_density(aes(fill=Species),colour=NA,alpha=0.2) +
@@ -79,6 +82,8 @@ shapiro.test(Adult_YP$log10Hg_ug_per_kgww)
 #JV: The distribution of the YP Hg concentration passes the Shapiro Wilk test now that it's log transformed, however, the SMB Hg concentration still does not
 #JV: I am unsure of ways to tell what transformations would be appropriate for my data (most Hg concentration data is log10 transformed). Maybe this is something that will be looked at in class in the future?
 
+## JD: Yes
+
 #JV: Let's visualize the data one more time to see the range of the Hg concentrations for both species and for each site in both species
 #JV: I will plot a horizontal red line that indicates the Canadian guideline for Hg concentration in retail fish (500ug/kgww)
 #JV: Sites will be ordered from upstream of the dam (REF = reference) to downtream of the dam (NF = near field and then FF = far field)
@@ -107,3 +112,6 @@ ggplot(Adult_YP, aes(x=Site, y=Hg_ug_per_kgww), abline(h=500, col="Red")) +
   ggtitle("Mercury in Yellow Perch") +
   theme(plot.title = element_text(hjust = 0.5)) + 
   scale_x_discrete(limits = c("REF", "NF", "FF"))
+
+## JD: This is cool; you could study how to get rid of some of the warning; not that I'm worried about them, but you don't want to acclimate to warnings
+## Grade 2.2/3
