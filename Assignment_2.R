@@ -107,3 +107,4 @@ ggplot(Adult_YP, aes(x=Site, y=Hg_ug_per_kgww), abline(h=500, col="Red")) +
   ggtitle("Mercury in Yellow Perch") +
   theme(plot.title = element_text(hjust = 0.5)) + 
   scale_x_discrete(limits = c("REF", "NF", "FF"))
+
