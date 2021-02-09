@@ -98,4 +98,4 @@ ggplot(dat, aes(x= TotalLength_mm, y = log10Hg_ug_per_kgww, colour=Species, grou
 #I guess this graph is a little cleaner to look at but it still takes my brain a while to make comparisons across the data
 #Overall I enjoy the first graph I made of length vs Hg concentration with both species and all sites on the same graph because it's easier to make all the different kinds or comparisons (between sites within species, between species within sites) when it's all right on the same scale and graph
 #I know that the facet graphs are also on the same scale but it's still easier to compare the slopes and intercepts for me when they're all on the same graph
-#I think this agrees with Cleveland's Hierarchy as well 
+#I think this agrees with Cleveland's Hierarchy as well  
