@@ -1,0 +1,8 @@
+In biology, everything is different. Your test does NOT tell you whether there "is" a difference, only whether you seem to have seen it clearly. 
+
+The blind approach (ANOVA followed by pairwise testing) is sometimes necessary, but is not usually the best approach, and not the sort of hypothesis testing we're asking you to think about. Your suggested relationship by Hg and 15N is much more like it.
+
+Your second MMV answer is basically the same as the first, but the questions are pretty different. We'll talk about it.
+
+Grade 1.9/3
+
