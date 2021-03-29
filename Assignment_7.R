@@ -1,9 +1,11 @@
-library(tibble)
-library(tidyr)
 library(tidyverse)
-library(ggplot2)
-library(dplyr)
-library(readr)
+## BMB: tidyverse includes ggplot2, readr, tidyr, dplyr, tibble ...
+##  no need to load these separately
+## library(tibble)
+## library(tidyr)
+## library(ggplot2)
+## library(dplyr)
+## library(readr)
 library(ggpubr)
 library(jtools)
 Fish_dat <- read_csv("New_Brunswick_Fall_2020_fish_data.csv")
@@ -18,19 +20,31 @@ gg0 <- ggplot(Adult_SMB,aes(TotalLength_mm,Hg_ug_per_kgww)) +
   geom_point()
 print(gg0)
 #From this plot it kind of looks like it would follow a log link model
+## BMB: Try to decide on your model ****BEFORE**** looking at the data
+## (you can always change your mind later)
 
 #I'll use the Gamma family, which has a log link by default, because my mercury data are positive continous
+## BMB: the log link is **NOT** the default (this is confusing)
+##  you ended up with an inverse link
 gg1 <- gg0 + geom_smooth(method="glm",colour="red",
                          formula=y~x,
                          method.args=list(family="Gamma"))
 print(gg1)
 #The line seems to fit my data fairly well but let's test it statistically
 
+## BMB: comparison
+gg1 + geom_smooth(method="glm",colour="blue",
+                         formula=y~x,
+                         method.args=list(family=Gamma(link="log")))
+
+
 g1 <- glm(Hg_ug_per_kgww~TotalLength_mm,Adult_SMB,family=Gamma(link="log"))
 print(g1)
 summary(g1)
 #The data are overdispersed by a factor of 3.38 which is quite high, however the gamma model accounts for overdispersion so I should not have to worry about this affecting how confident I can be in the fit of my model
-#My p value is very small which shows that I can be confident that mercury concentration is increasing with total length 
+## BMB: "overdispersion" doesn't really exist here; probably don't even mention it
+#My p value is very small which shows that I can be confident that mercury concentration is increasing with total length
+## BMB: you should check diagnostics *before* looking at summary
 
 #However, it's good to look at the diagnostic plots of this model to see if it's violating any assumptions
 par(mfrow = c(2, 2))
@@ -39,7 +53,9 @@ plot(g1,id.n=4)
 #To deal with this I will try make a polynomial model instead of linear model
 #Nevertheless, the residuals seem to be normally distrbuted 
 #Also, the residuals seem to be spread equally along the ranges of predictors
-#There seem to be four outliers in my data. Maybe they will be less prevelant in the polynomial model.
+#There seem to be four outliers in my data. Maybe they will be less prevalent in the polynomial model.
+## BMB: alternatively, some of the appearance of nonlinearity could be
+## driven by observations 20 and 21?
 
 #Making a quadratic model using the Gamma family
 g2 <- update(g1, Hg_ug_per_kgww~poly(TotalLength_mm,2))
@@ -47,6 +63,9 @@ gg2 <- gg0 + geom_smooth(method="glm",formula=y~poly(x,2),
              method.args=list(family="Gamma"))
 print(gg2)
 summary(g2)
+## BMB: again, this is an inverse link, not a log link
+## (might be a better fit, but more extreme)
+
 #You can see from the estimate of the linear model that the trend is clearly positive but also from the quadratic model that that trend is leveling out
 #My dispersion parameter is a bit lower for the quadratic model (0.226 compared to 0.243 for the linear) because I'm explaining a bit more variability with this model
 
@@ -61,6 +80,7 @@ plot(g2,id.n=4)
 #The residuals seem to be normally distributed
 #The residuals seem to be spread fairly equally along the ranges of predictors
 #Now I only have 2 outliers
+## BMB: doesn seem fairly nice
 
 #Let's plot the models against each other 
 print(gg2 <- gg1+geom_smooth(method="glm",formula=y~poly(x,2),
@@ -71,8 +91,15 @@ print(gg2 <- gg1+geom_smooth(method="glm",formula=y~poly(x,2),
 #Here we can see what the regression model is telling us by looking at what kind of predictions it generates
 effect_plot(g2, pred = TotalLength_mm, interval = TRUE,
             int.type = "confidence",  data = Adult_SMB)
-#For the quadratic model it's predicting that mercury goes from decreasing as you increase in length for smaller fish to increasing as you increase length for larger fish 
+#For the quadratic model it's predicting that mercury goes from decreasing as you increase in length for smaller fish to increasing as you increase length for larger fish
+
+## BMB: Not sure I can think of a biological justification for this, though.
+##  What's up with the two small fish with high mercury (observations 20/21,
+## I think)? Could these obs be driving the quadratic result?
 
 effect_plot(g1, pred = TotalLength_mm, interval = TRUE,
             int.type = "confidence",  data = Adult_SMB)
 #For the linear model, mercury just increases with length 
+
+## grade: 2.1
+

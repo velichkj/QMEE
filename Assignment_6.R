@@ -52,4 +52,11 @@ plot(e1)
 
 print(summary(lmint))
 #from the interaction, it doesn't seem like the interaction between species and length with respect to mercury concentration
+## JD: YOu are missing some words above. "Is strong" might be a good choice. I hope you looked and (and tried to interpret) the values. An effects plot can help.
 #i.e. the mercury concentration increases with length similarily between species  
+
+## JD: Nice job with the diagnostic comparison
+## You should not go ahead and drop things, though. You have plenty of data, and should just stick with your "full" model. There are two issues now. One is interpreting the main effects in a model with interactions. You can do this by choosing sum-to-zero contrasts on fish (to get a measure of the average slope across species) and by centering length (to get an estimate of the difference between species at a sensible point on the length curves). All of this would be clarified by a nice effects plot of the whole model 
+## This effects plot should probably also be done on the original scale (not the log scale as your current effects plot) for biological interpretability
+
+## Grade 2.0/3
